@@ -1,17 +1,19 @@
 package aco_practica3;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Random;
 
 public class CoberturaVertices {
     private Grafo grafo;
+    private ArrayList<Integer> S;
     
     public CoberturaVertices(Grafo grafo) {
         this.grafo = grafo;
+        this.S = S = new ArrayList<>();
     }
     
     public ArrayList<Integer> execCV() {
-        ArrayList<Integer> S = new ArrayList<>();
         ArrayList<Arista> E;
         ArrayList<Arista> E_prima;
         
@@ -29,6 +31,10 @@ public class CoberturaVertices {
             }
             E_prima.clear();
         }
+        LinkedHashSet<Integer> lhs = new LinkedHashSet<>();
+        lhs.addAll(S);
+        S.clear();
+        S.addAll(lhs);
         return S;
     }
     
@@ -39,5 +45,19 @@ public class CoberturaVertices {
             if(arista.nodoComun(sample)) E_prima.add(arista);
         }
         return E_prima;
+    }
+    
+    @Override
+    public String toString() {
+        String out = "";
+        if(!S.isEmpty()) {
+            out += "Vértices de cobertura : { ";
+            for (Integer vertices : S) {
+                out += vertices + ", ";
+            }
+            out += "}";
+            return out;
+        }
+        return "Vértices de cobertur : {}";
     }
 }

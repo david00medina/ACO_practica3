@@ -13,7 +13,7 @@ public class Main {
         g1.mostrarGrafo();
         CoberturaVertices cv = new CoberturaVertices(g1);
         ArrayList<Integer> S = cv.execCV();
-        System.out.println("\n Una solución es : \n");
+        System.out.println(cv);
         for(Integer i : S) {
             System.out.println(i);
         }
