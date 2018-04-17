@@ -14,9 +14,6 @@ public class Main {
         CoberturaVertices cv = new CoberturaVertices(g1);
         ArrayList<Integer> S = cv.execCV();
         System.out.println(cv);
-        for(Integer i : S) {
-            System.out.println(i);
-        }
     }
     
 }

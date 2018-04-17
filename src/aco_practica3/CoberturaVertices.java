@@ -22,29 +22,15 @@ public class CoberturaVertices {
         while (!E.isEmpty()) {
             Random rand = new Random();
             Arista sample = E.get(rand.nextInt(E.size()));
-            E_prima = aristasIncidentes(E, sample);
+            aristasIncidentes(E, sample);
             S.add(sample.getNodoInicial());
             S.add(sample.getNodoSiguiente());
-            // E = E - E'
-            for(Arista a : E_prima) {
-                E.remove(a);
-            }
-            E_prima.clear();
         }
-        LinkedHashSet<Integer> lhs = new LinkedHashSet<>();
-        lhs.addAll(S);
-        S.clear();
-        S.addAll(lhs);
         return S;
     }
     
-    private ArrayList<Arista> aristasIncidentes(ArrayList<Arista> E, Arista sample) {
-        ArrayList<Arista> E_prima = new ArrayList<>();
-        
-        for (Arista arista : E) {
-            if(arista.nodoComun(sample)) E_prima.add(arista);
-        }
-        return E_prima;
+    private void aristasIncidentes(ArrayList<Arista> E, Arista sample) {
+        E.removeIf(e -> (e.nodoComun(sample)));
     }
     
     @Override
@@ -52,10 +38,15 @@ public class CoberturaVertices {
         String out = "";
         if(!S.isEmpty()) {
             out += "Vértices de cobertura : { ";
-            for (Integer vertices : S) {
-                out += vertices + ", ";
+            //for (Integer vertices : S) {
+            //    out += vertices + ", ";
+            //}
+            for (int i = 0; i < S.size(); i++) {
+                if(i == S.size() - 1)
+                    out += S.get(i) + " }";
+                else
+                    out += S.get(i) + ", ";
             }
-            out += "}";
             return out;
         }
         return "Vértices de cobertur : {}";
