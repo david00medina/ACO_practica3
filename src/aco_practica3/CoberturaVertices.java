@@ -13,11 +13,21 @@ public class CoberturaVertices {
         this.S = S = new ArrayList<>();
     }
     
-    public ArrayList<Integer> execCV() {
+    public ArrayList<Integer> exec() {
+        if(this.grafo.isConexo()){
+            System.out.println("[+] PRUEBA : El grafo es conexo");
+            return execCV();
+        }
+        
+        System.out.println("[+] PRUEBA : El grafo no es conexo");
+        return new ArrayList<Integer>();
+    }
+    
+    private ArrayList<Integer> execCV() {
         ArrayList<Arista> E;
         ArrayList<Arista> E_prima;
         
-        E = grafo.getAristas();
+        E = (ArrayList<Arista>)grafo.getAristas().clone();
         
         while (!E.isEmpty()) {
             Random rand = new Random();
@@ -33,14 +43,37 @@ public class CoberturaVertices {
         E.removeIf(e -> (e.nodoComun(sample)));
     }
     
+    public boolean isSolucion() {
+        ArrayList<Integer> cola = new ArrayList<>();
+        ArrayList<Integer> nodosCubiertos = new ArrayList<>();
+        ArrayList<Integer> hijos = new ArrayList<>();
+        
+        cola.addAll(S);
+        while(!cola.isEmpty()) {
+            Integer nodo = cola.get(0);
+            if(!nodosCubiertos.contains(nodo))
+                nodosCubiertos.add(nodo);
+            cola.remove(0);
+            hijos = grafo.expansion(nodo);
+            for (Integer hijo : hijos) {
+                if(!nodosCubiertos.contains(hijo) && !cola.contains(hijo))
+                    nodosCubiertos.add(hijo);
+            }
+        }
+        if(grafo.getnNodos() == nodosCubiertos.size()) {
+            System.out.println("[+] PRUEBA : La solución cubre todos los vértices.");
+            return true;
+        }
+        
+        System.out.println("[+] PRUEBA : La solución NO cubre todos los vértices.");
+        return false;
+    }
+    
     @Override
     public String toString() {
         String out = "";
         if(!S.isEmpty()) {
             out += "Vértices de cobertura : { ";
-            //for (Integer vertices : S) {
-            //    out += vertices + ", ";
-            //}
             for (int i = 0; i < S.size(); i++) {
                 if(i == S.size() - 1)
                     out += S.get(i) + " }";

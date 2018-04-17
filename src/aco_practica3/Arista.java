@@ -34,6 +34,12 @@ public class Arista {
         return false;
     }
     
+    public boolean nodoComun(int n) {
+        if(n == this.getNodoInicial()) return true;
+        if(n == this.getNodoSiguiente()) return true;
+        return false;
+    }
+    
     @Override
     public String toString() {
         return "Vértice(" + nodoInicial  + ") -----> Vértice(" + nodoSiguiente + ")";

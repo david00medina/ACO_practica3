@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,9 +44,8 @@ public class Grafo {
 
     public void mostrarGrafo() {
         System.out.println("MOSTRAR GRAFO");
-        for (Arista arista : aristas) {
-            System.out.println("Soy el nodo " + arista.getNodoInicial() 
-                        + " voy a " + arista.getNodoSiguiente());
+        for(Arista arista : aristas) {
+            System.out.println(arista);
         }
         System.out.println("");
     }
@@ -56,5 +56,39 @@ public class Grafo {
     
     public void setAristas(int a, int b) {
         aristas.add(new Arista(a, b));
+    }
+    
+    public boolean isConexo() {
+        ArrayList<Integer> nodosVisitados = new ArrayList<>();
+        ArrayList<Integer> cola = new ArrayList<>();
+        ArrayList<Integer> hijos = new ArrayList<>();
+        cola.add(aristas.get(0).getNodoInicial());
+        while(!cola.isEmpty()) {
+            Integer nodo = cola.get(0);
+            nodosVisitados.add(nodo);
+            cola.remove(nodo);
+            hijos = expansion(nodo);
+            for (Integer hijo : hijos) {
+                if(!nodosVisitados.contains(hijo) && !cola.contains(hijo))
+                    cola.add(hijo);
+            }
+        }
+        if(nodosVisitados.size() == nNodos)
+            return true;
+        
+        return false;
+    }
+    
+    public ArrayList<Integer> expansion(int nodo) {
+        ArrayList<Integer> hijos = new ArrayList<>();
+        for (Arista arista : aristas) {
+            if(arista.nodoComun(nodo)) {
+                if(arista.getNodoInicial() != nodo)
+                    hijos.add(arista.getNodoInicial());
+                else
+                    hijos.add(arista.getNodoSiguiente());
+            }
+        }
+        return hijos;
     }
 }
